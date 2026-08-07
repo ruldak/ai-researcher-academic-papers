@@ -50,7 +50,7 @@ class OpenAlexClient:
             params["api_key"] = self._api_key
 
         if search_query:
-            params["search"] = search_query
+            params["search.semantic"] = search_query
 
         if filters:
             filter_parts = []
@@ -68,7 +68,7 @@ class OpenAlexClient:
                 filter_parts.append(f"type:{filters['document_type']}")
 
             if filters.get("open_access_only"):
-                filter_parts.append("open_access.is_oa:true")
+                filter_parts.append("is_oa:true")
 
             if filter_parts:
                 params["filter"] = ",".join(filter_parts)

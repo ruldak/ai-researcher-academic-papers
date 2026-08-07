@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from app.cache import redis_client
 from app.config import settings
 from app.database import engine
-from app.routers import auth
+from app.routers import auth, search
 
 
 logger = logging.getLogger(__name__)
@@ -48,6 +48,7 @@ app.add_middleware(
 
 # Register routers.
 app.include_router(auth.router)
+app.include_router(search.router)
 
 
 @app.exception_handler(Exception)
