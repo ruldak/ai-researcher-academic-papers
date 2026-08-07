@@ -22,12 +22,14 @@ class Settings(BaseSettings):
     SEARCH_CACHE_TTL_SECONDS: int = 300
     CACHE_PREFIX: str = "ai_researcher"
 
-    # OpenAI
-    OPENAI_API_KEY: str | None = None
-    OPENAI_MODEL: str = "gpt-4o-mini"
+    # LLM (Groq - OpenAI compatible)
+    GROQ_API_KEY: str | None = None
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+    GROQ_MODEL: str = "openai/gpt-oss-120b"
     LLM_TIMEOUT_SECONDS: int = 30
 
     # OpenAlex
+    OPENALEX_API_KEY: str | None = None
     OPENALEX_MAILTO: str = "your@email.com"
     OPENALEX_TIMEOUT_SECONDS: int = 30
 

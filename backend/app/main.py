@@ -1,26 +1,33 @@
+import logging
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
+from app.cache import redis_client
 from app.config import settings
 from app.database import engine
 from app.routers import auth
+
+
+logger = logging.getLogger(__name__)
+
+# Basic logging configuration for development.
+logging.basicConfig(level=logging.INFO)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Application lifespan handler.
-
-    Startup and shutdown logic will be added here later,
-    such as Redis connection initialization.
     """
     # Startup logic can be placed here.
     yield
 
     # Shutdown logic.
     await engine.dispose()
+    await redis_client.close()
 
 
 app = FastAPI(
@@ -41,6 +48,26 @@ app.add_middleware(
 
 # Register routers.
 app.include_router(auth.router)
+
+
+@app.exception_handler(Exception)
+async def unhandled_exception_handler(
+    request: Request,
+    exc: Exception,
+) -> JSONResponse:
+    """
+    Global handler for unexpected errors.
+    """
+    logger.exception(
+        "Unhandled error on %s %s",
+        request.method,
+        request.url.path,
+    )
+
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "Internal server error"},
+    )
 
 
 @app.get("/api/health")
