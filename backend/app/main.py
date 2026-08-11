@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from app.cache import redis_client
 from app.config import settings
 from app.database import engine
-from app.routers import auth, search
+from app.routers import auth, search, papers
 
 
 logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="AI Researcher Backend",
+    title="AI Researcher Assistant",
     description="Backend for AI-assisted academic paper search and review.",
     version="0.1.0",
     lifespan=lifespan,
@@ -49,6 +49,7 @@ app.add_middleware(
 # Register routers.
 app.include_router(auth.router)
 app.include_router(search.router)
+app.include_router(papers.router)
 
 
 @app.exception_handler(Exception)
