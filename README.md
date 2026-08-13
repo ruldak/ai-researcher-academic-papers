@@ -1,8 +1,10 @@
-# AI Researcher Backend
+# AI Researcher
 
-> A backend service that helps researchers **find**, **understand**, and **organize** academic papers using AI.
+> A full-stack application that helps researchers **find**, **understand**, and **organize** academic papers using AI.
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF.svg)](https://vitejs.dev)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB.svg)](https://www.python.org)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791.svg)](https://www.postgresql.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -15,12 +17,13 @@
 - [How It Works — The Full Picture](#-how-it-works--the-full-picture)
 - [Architecture](#-architecture)
 - [Tech Stack](#-tech-stack)
-- [Database Design](#-database-design)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
-- [Configuration](#️-configuration)
-- [Key Design Decisions](#-key-design-decisions)
-- [API Documentation](#-api-documentation)
+- [Backend Details](#-backend-details)
+  - [Database Design](#-database-design)
+  - [Configuration](#️-configuration)
+  - [Key Design Decisions](#-key-design-decisions)
+  - [API Documentation](#-api-documentation)
 
 ---
 
@@ -35,7 +38,7 @@ Imagine you're a researcher. You want to find academic papers about a topic, but
 - Reading every paper's abstract to decide if it's relevant takes forever.
 - Keeping track of which papers you've already read is a mess.
 
-**This backend is the engine behind a tool that solves all of that.**
+**This application is a tool that solves all of that.**
 
 Think of it as a **smart research assistant** that:
 
@@ -51,7 +54,7 @@ Let's say a researcher types this into the app:
 > *"dampak long COVID pada sistem kardiovaskular"*
 > (the impact of long COVID on the cardiovascular system)
 
-Here's what the backend does **behind the scenes**:
+Here's what the application does **behind the scenes**:
 
 1. **Translates & refines the query.** It uses AI to turn that natural sentence into sharp English search keywords like `"long COVID cardiovascular impact"`.
 
@@ -66,7 +69,7 @@ Here's what the backend does **behind the scenes**:
 
 6. **Returns a clean result.** The app shows you a list of papers, each with a status label like `unread`, so you can mark them as you go.
 
-**You didn't have to write a technical search query. You didn't have to read 70 abstracts. You got a summary and an organized list.** That's what this backend makes possible.
+**You didn't have to write a technical search query. You didn't have to read 70 abstracts. You got a summary and an organized list.** That's what this application makes possible.
 
 ---
 
@@ -190,7 +193,7 @@ Each user tracks their own review progress. The backend looks up whether the cur
 
 ### The Review Flow: Tracking Papers
 
-After searching, a user can manage individual papers:
+After searching, a user can manage individual papers via the frontend UI:
 
 - **View detail:** Fetch a paper's full information plus the user's status and note.
 - **Update status:** Mark a paper as `reading`, `reviewed`, `skipped`, etc.
@@ -207,6 +210,7 @@ These actions update the `user_paper_status` table, which stores one row per (us
 ```
 ┌──────────────────────────────────────────────────────────────┐
 │                      CLIENT (Frontend)                       │
+│                   React 19 + Vite + Tailwind                 │
 └──────────────────────────┬───────────────────────────────────┘
                            │  HTTP (REST API + JWT Auth)
                            ▼
@@ -231,22 +235,22 @@ These actions update the `user_paper_status` table, which stores one row per (us
 └──────────────────────────────────────────────────────────────┘
 ```
 
-### Components
-
-| Component | Responsibility |
-|---|---|
-| **Routers** | Define HTTP endpoints, validate input, return responses. Thin layer. |
-| **Services** | Contain business logic and orchestration. The "brain" of the app. |
-| **OpenAlex Client** | Wraps the OpenAlex API. Handles HTTP calls, parsing, and normalization. |
-| **LLM Service** | Wraps the AI provider (Groq). Handles query parsing and summarization. |
-| **Models** | Define database tables using SQLAlchemy ORM. |
-| **Schemas** | Define request/response shapes using Pydantic for validation. |
-| **PostgreSQL** | Persistent storage for users, papers, searches, and statuses. |
-| **Redis** | Fast in-memory cache for OpenAlex results and AI summaries. |
-
 ---
 
 ## Tech Stack
+
+### Frontend Stack
+
+| Layer | Technology | Why |
+|---|---|---|
+| Framework | **React 19** | Modern UI library |
+| Bundler | **Vite 6** | Extremely fast development server and bundler |
+| Styling | **Tailwind CSS 4** | Utility-first CSS framework |
+| Components | **Shadcn UI** | Accessible and customizable component system |
+| State/Data | **React Query** | Powerful asynchronous state management |
+| Routing | **React Router 7** | Client-side routing |
+
+### Backend Stack
 
 | Layer | Technology | Why |
 |---|---|---|
@@ -265,11 +269,124 @@ These actions update the `user_paper_status` table, which stores one row per (us
 
 ---
 
-## Database Design
+## Project Structure
+
+This is a monorepo consisting of both the backend and frontend components.
+
+```
+ai-researcher/
+├── backend/                    # FastAPI application
+│   ├── alembic/                # Database migrations
+│   ├── app/                    # Main backend application code
+│   ├── venv/                   # Python virtual environment (if created)
+│   ├── .env.example            # Backend environment template
+│   ├── api-spec.md             # Detailed API specifications
+│   └── requirements.txt        # Python dependencies
+├── frontend/                   # React frontend application
+│   ├── node_modules/           # Node.js dependencies (if installed)
+│   ├── src/                    # Frontend source code
+│   ├── .env.example            # Frontend environment template
+│   ├── components.json         # Shadcn configuration
+│   ├── package.json            # Node dependencies
+│   └── vite.config.js          # Vite configuration
+└── README.md                   # This file
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Make sure you have these installed:
+
+- **Node.js 20+** (for frontend)
+- **Python 3.11+** (for backend)
+- **PostgreSQL 14+** (running locally or accessible)
+- **Redis** (running locally or accessible)
+- **Git**
+
+### Step 1: Clone the repository
+
+```bash
+git clone <your-repo-url>
+cd ai-researcher
+```
+
+### Step 2: Backend Setup
+
+Open a terminal and navigate to the backend directory:
+
+```bash
+cd backend
+```
+
+1. **Create and activate a virtual environment:**
+   ```bash
+   python -m venv venv
+   # Windows:
+   venv\Scripts\activate
+   # Linux / macOS:
+   source venv/bin/activate
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Set up environment variables:**
+   Copy `.env.example` to `.env` and fill in your values:
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Create the database & run migrations:**
+   ```bash
+   createdb ai_researcher
+   alembic upgrade head
+   ```
+
+5. **Start the backend server:**
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+   The API will run at `http://127.0.0.1:8000`.
+
+### Step 3: Frontend Setup
+
+Open a new terminal and navigate to the frontend directory:
+
+```bash
+cd frontend
+```
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables (if required):**
+   Copy `.env.example` to `.env`. Ensure your backend API URL is configured (usually defaults to `http://127.0.0.1:8000`).
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Start the frontend development server:**
+   ```bash
+   npm run dev
+   ```
+   The web application will run at `http://localhost:5173`.
+
+---
+
+## Backend Details
+
+### Database Design
 
 The database has **5 tables**:
 
-### `users`
+#### `users`
 Stores account credentials and profile info.
 
 | Column | Type | Notes |
@@ -280,7 +397,7 @@ Stores account credentials and profile info.
 | `name` | VARCHAR(255) | Display name |
 | `created_at` | TIMESTAMP | Auto-set |
 
-### `searches`
+#### `searches`
 Stores each search a user performs.
 
 | Column | Type | Notes |
@@ -293,7 +410,7 @@ Stores each search a user performs.
 | `result_count` | INTEGER | Total papers found |
 | `created_at` | TIMESTAMP | Auto-set |
 
-### `papers`
+#### `papers`
 Stores paper metadata. One row per unique paper (deduplicated by `openalex_id`).
 
 | Column | Type | Notes |
@@ -308,7 +425,7 @@ Stores paper metadata. One row per unique paper (deduplicated by `openalex_id`).
 | `raw_data` | JSONB | Full original OpenAlex response |
 | `created_at` | TIMESTAMP | Auto-set |
 
-### `search_results`
+#### `search_results`
 Links a search to the papers it returned (many-to-many).
 
 | Column | Type | Notes |
@@ -320,7 +437,7 @@ Links a search to the papers it returned (many-to-many).
 | `relevance_score` | FLOAT | From OpenAlex |
 | Unique constraint | | `(search_id, paper_id)` |
 
-### `user_paper_status`
+#### `user_paper_status`
 Tracks each user's review progress per paper.
 
 | Column | Type | Notes |
@@ -333,149 +450,9 @@ Tracks each user's review progress per paper.
 | `updated_at` | TIMESTAMP | Auto-updated |
 | Unique constraint | | `(user_id, paper_id)` |
 
----
+### Configuration
 
-## Project Structure
-
-```
-backend/
-├── app/
-│   ├── __init__.py
-│   ├── main.py                 # FastAPI app, CORS, lifespan, error handlers
-│   ├── config.py               # Settings loaded from environment
-│   ├── database.py             # Async SQLAlchemy engine & session
-│   ├── cache.py                # Async Redis client
-│   ├── models/                 # SQLAlchemy ORM models
-│   │   ├── __init__.py
-│   │   ├── user.py
-│   │   ├── search.py
-│   │   ├── paper.py
-│   │   ├── search_result.py
-│   │   └── user_paper_status.py
-│   ├── schemas/                # Pydantic request/response models
-│   │   ├── __init__.py
-│   │   ├── auth.py
-│   │   ├── search.py
-│   │   ├── paper.py
-│   │   └── status.py
-│   ├── routers/                # HTTP endpoint definitions
-│   │   ├── __init__.py
-│   │   ├── auth.py
-│   │   ├── search.py
-│   │   └── papers.py
-│   ├── services/               # Business logic & orchestration
-│   │   ├── __init__.py
-│   │   ├── auth_service.py
-│   │   ├── openalex_client.py
-│   │   ├── llm_service.py
-│   │   ├── search_service.py
-│   │   └── paper_service.py
-│   └── utils/                  # Helpers
-│       ├── __init__.py
-│       ├── abstract.py         # Reconstruct OpenAlex abstracts
-│       └── dependencies.py     # get_current_user, get_db
-├── alembic/                    # Database migrations
-├── alembic.ini
-├── requirements.txt
-├── .env.example
-├── README.md
-└── api-spec.md
-```
-
----
-
-## Getting Started
-
-### Prerequisites
-
-Make sure you have these installed:
-
-- **Python 3.11+**
-- **PostgreSQL 14+** (running locally or accessible)
-- **Redis** (running locally or accessible)
-- **pip** (comes with Python)
-
-### Step 1: Clone and enter the project
-
-```bash
-cd backend
-```
-
-### Step 2: Create and activate a virtual environment
-
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# Linux / macOS
-source .venv/bin/activate
-```
-
-### Step 3: Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Step 4: Set up environment variables
-
-Copy the example file and fill in your values:
-
-```bash
-# Linux / macOS
-cp .env.example .env
-
-# Windows
-copy .env.example .env
-```
-
-Open `.env` and configure at minimum:
-
-```env
-DATABASE_URL=postgresql+asyncpg://user:pass@localhost:5432/ai_researcher
-REDIS_URL=redis://localhost:6379/0
-GROQ_API_KEY=your_groq_api_key
-OPENALEX_MAILTO=your@email.com
-JWT_SECRET_KEY=a-long-random-secret-string
-```
-
-### Step 5: Create the database
-
-```bash
-createdb ai_researcher
-```
-
-### Step 6: Run database migrations
-
-```bash
-alembic upgrade head
-```
-
-### Step 7: Start the server
-
-```bash
-uvicorn app.main:app --reload
-```
-
-The API is now running at:
-
-```
-http://127.0.0.1:8000
-```
-
-Interactive API docs (Swagger UI):
-
-```
-http://127.0.0.1:8000/docs
-```
-
----
-
-## Configuration
-
-All configuration is loaded from environment variables (or the `.env` file).
+All backend configuration is loaded from environment variables (or the `backend/.env` file).
 
 | Variable | Required | Default | Description |
 |---|---|---|---|
@@ -496,11 +473,9 @@ All configuration is loaded from environment variables (or the `.env` file).
 | `CORS_ORIGINS` | ❌ | `http://localhost:5173,http://localhost:3000` | Allowed frontend origins |
 | `ENVIRONMENT` | ❌ | `development` | Environment name |
 
----
+### Key Design Decisions
 
-## Key Design Decisions
-
-### 1. Graceful degradation when AI is unavailable
+#### 1. Graceful degradation when AI is unavailable
 
 The AI (LLM) is an **enhancement**, not a hard dependency. If the LLM key is missing or a call fails:
 
@@ -509,43 +484,41 @@ The AI (LLM) is an **enhancement**, not a hard dependency. If the LLM key is mis
 
 The search **always returns papers**. The app never breaks because of AI.
 
-### 2. Caching strategy
+#### 2. Caching strategy
 
 - **What's cached:** OpenAlex results and AI summaries, keyed by a hash of (search terms + filters + pagination).
 - **What's NOT cached:** User-specific review statuses. These are always fetched fresh from the database so each user sees their own correct state.
 - **TTL:** Configurable via `SEARCH_CACHE_TTL_SECONDS` (default 5 minutes).
 - **Resilience:** If Redis is down, the app logs the error and continues without caching.
 
-### 3. Paper upsert by `openalex_id`
+#### 3. Paper upsert by `openalex_id`
 
 Papers are deduplicated globally. The same paper found in multiple searches is stored **once** and updated if its metadata changes. This keeps the database lean.
 
-### 4. Per-user review state
+#### 4. Per-user review state
 
 Status (`unread`/`reading`/`reviewed`/`skipped`) and notes are stored per **(user, paper)** pair. This means:
 
 - Every user has an independent reading list.
 - The same paper can be `reviewed` by one user and `unread` by another.
 
-### 5. LLM only extracts search terms
+#### 5. LLM only extracts search terms
 
 The AI parses the query into search keywords **only**. All filters (year range, document type, open-access) come from the user's explicit input. This keeps filtering predictable and user-controlled.
 
-### 6. OpenAlex API key as query parameter
+#### 6. OpenAlex API key as query parameter
 
 The OpenAlex API key (if configured) is sent as a query parameter `api_key`, alongside `mailto` for the polite pool.
 
----
-
-## API Documentation
+### API Documentation
 
 For the **complete API reference** intended for the frontend team, see:
 
-👉 **[api-spec.md](./api-spec.md)**
+👉 **[api-spec.md](./backend/api-spec.md)**
 
 It includes every endpoint with request/response schemas, examples, error codes, and authentication details.
 
-### Quick endpoint summary
+#### Quick endpoint summary
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
@@ -574,8 +547,8 @@ Returns:
 { "status": "ok" }
 ```
 
-Use this to verify the service is running.
+Use this to verify the backend service is running.
 
 ---
 
-*Built with FastAPI, PostgreSQL, Redis, OpenAlex, and Groq.*
+*Built with React, FastAPI, PostgreSQL, Redis, OpenAlex, and Groq.*
