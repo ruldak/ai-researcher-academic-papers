@@ -542,6 +542,7 @@ async def list_user_searches(
         result = await db.execute(
             select(Search)
             .where(Search.user_id == user_id)
+            .where(Search.result_count > 0)
             .order_by(Search.created_at.desc())
             .limit(limit)
         )
