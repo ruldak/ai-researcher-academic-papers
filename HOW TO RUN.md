@@ -13,6 +13,13 @@ This application is fully configured to run using Docker and Docker Compose. All
 - [Docker](https://docs.docker.com/get-docker/)
 - [Docker Compose](https://docs.docker.com/compose/install/) (Usually included with Docker Desktop)
 
+### Configuration
+
+Before running the application, you need to set up the environment variables:
+
+1. For the backend: Copy `backend/.env.example` to `backend/.env` and set the required values.
+2. For the frontend: Copy `frontend/.env.example` to `frontend/.env` and set the required values.
+
 ### Running the Application
 
 1. Open your terminal or command prompt.
