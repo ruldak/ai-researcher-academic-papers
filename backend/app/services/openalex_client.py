@@ -23,7 +23,6 @@ class OpenAlexClient:
                 "User-Agent": f"AIResearcher/1.0 (mailto:{settings.OPENALEX_MAILTO})"
             },
         )
-        self._mailto = settings.OPENALEX_MAILTO
         self._api_key = settings.OPENALEX_API_KEY
 
     async def search_works(
@@ -42,7 +41,6 @@ class OpenAlexClient:
             "sort": sort_by,
             "page": page,
             "per_page": per_page,
-            "mailto": self._mailto,
         }
 
         # Include API key as query parameter when configured.
@@ -60,9 +58,9 @@ class OpenAlexClient:
             if year_from and year_to:
                 filter_parts.append(f"publication_year:{year_from}-{year_to}")
             elif year_from:
-                filter_parts.append(f"publication_year:{year_from}-")
+                filter_parts.append(f"publication_year:>{year_from}")
             elif year_to:
-                filter_parts.append(f"publication_year:-{year_to}")
+                filter_parts.append(f"publication_year:<{year_to}")
 
             if filters.get("document_type"):
                 filter_parts.append(f"type:{filters['document_type']}")
