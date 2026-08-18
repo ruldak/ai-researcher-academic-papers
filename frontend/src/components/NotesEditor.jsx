@@ -12,14 +12,12 @@ export default function NotesEditor({ paperId, initialNote }) {
   const [note, setNote] = useState(initialNote ?? "")
   const [savedNote, setSavedNote] = useState(initialNote ?? "")
 
-  // Sinkronkan saat data dari API selesai dimuat
   useEffect(() => {
     setNote(initialNote ?? "")
     setSavedNote(initialNote ?? "")
   }, [initialNote])
 
   const mutation = useMutation({
-    // String kosong dikirim sebagai null → menghapus note (sesuai API spec)
     mutationFn: (value) =>
       api.patch(`/papers/${paperId}/note`, { note: value || null }).then((r) => r.data),
     onSuccess: () => {

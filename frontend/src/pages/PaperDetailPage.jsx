@@ -70,7 +70,6 @@ export default function PaperDetailPage() {
         <ArrowLeft className="h-4 w-4" /> Back to Results
       </Button>
 
-      {/* Judul + metadata */}
       <header className="flex flex-col gap-3">
         <h1 className="text-xl font-semibold leading-snug sm:text-2xl">{paper.title}</h1>
         <p className="text-sm text-muted-foreground">{authorsText}</p>
@@ -97,13 +96,11 @@ export default function PaperDetailPage() {
 
       <Separator />
 
-      {/* Status review */}
       <section>
         <h2 className="mb-2 text-sm font-semibold">Review status</h2>
         <StatusButtons paperId={paper.id} value={status} onChange={setStatus} />
       </section>
 
-      {/* Abstract */}
       <section>
         <h2 className="mb-2 text-sm font-semibold">Abstract</h2>
         <p className="whitespace-pre-line text-sm leading-relaxed text-foreground/90">
@@ -111,7 +108,6 @@ export default function PaperDetailPage() {
         </p>
       </section>
 
-      {/* Topics & Keywords */}
       {(paper.topics?.length > 0 || paper.keywords?.length > 0) && (
         <section className="flex flex-col gap-4">
           {paper.topics?.length > 0 && (
@@ -137,7 +133,6 @@ export default function PaperDetailPage() {
         </section>
       )}
 
-      {/* Links */}
       <section className="flex flex-wrap gap-2">
         {paper.landing_page_url && (
           <Button variant="outline" size="sm" asChild>
@@ -157,7 +152,6 @@ export default function PaperDetailPage() {
 
       <Separator />
 
-      {/* Notes */}
       <section>
         <h2 className="mb-2 text-sm font-semibold">My Notes</h2>
         <NotesEditor paperId={paper.id} initialNote={user_status?.note} />

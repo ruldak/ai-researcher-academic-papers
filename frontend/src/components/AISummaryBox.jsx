@@ -1,7 +1,6 @@
 import { Sparkles } from "lucide-react"
 
 export default function AISummaryBox({ summary }) {
-  // ai_summary bisa null → sembunyikan box
   if (!summary) return null
 
   return (

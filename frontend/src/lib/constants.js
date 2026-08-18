@@ -7,7 +7,6 @@ export const STATUSES = [
   { value: "skipped", label: "Skipped", icon: SkipForward },
 ]
 
-// Badge kecil di card hasil pencarian
 export const STATUS_BADGE_CLASSES = {
   unread: "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300",
   reading: "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300",
@@ -15,7 +14,6 @@ export const STATUS_BADGE_CLASSES = {
   skipped: "border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-900 dark:bg-orange-950 dark:text-orange-300",
 }
 
-// Tombol aktif di halaman detail
 export const STATUS_ACTIVE_CLASSES = {
   unread: "border-slate-600 bg-slate-600 text-white hover:bg-slate-700 hover:text-white",
   reading: "border-blue-600 bg-blue-600 text-white hover:bg-blue-700 hover:text-white",

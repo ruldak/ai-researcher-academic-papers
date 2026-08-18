@@ -32,7 +32,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-muted/40 px-4 py-10">
-      {/* Brand */}
       <div className="mb-6 flex flex-col items-center text-center">
         <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
           <GraduationCap className="h-6 w-6" />
@@ -89,7 +88,6 @@ export default function LoginPage() {
         </CardContent>
       </Card>
 
-      {/* Value proposition singkat */}
       <div className="mt-6 flex w-full max-w-sm flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
         <span className="inline-flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5" /> AI summaries</span>
         <span className="inline-flex items-center gap-1.5"><Library className="h-3.5 w-3.5" /> Reading statuses</span>

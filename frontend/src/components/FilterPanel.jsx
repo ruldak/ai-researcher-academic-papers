@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { SlidersHorizontal, X } from "lucide-react"
 
-// Daftar lengkap tipe dokumen OpenAlex, diurutkan dari yang paling umum
 export const DOCUMENT_TYPES = [
   { value: "", label: "All types" },
   { value: "article", label: "Article" },

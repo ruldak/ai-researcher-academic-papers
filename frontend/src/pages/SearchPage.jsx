@@ -20,7 +20,6 @@ export default function SearchPage() {
 
   const searchMutation = useMutation({
     mutationFn: ({ query, filters, sort }) => {
-      // Kirim hanya field yang punya nilai → null untuk yang kosong
       const body = {
         query,
         filters: {
@@ -35,7 +34,6 @@ export default function SearchPage() {
     },
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["searches"] })
-      // Simpan search params di sessionStorage agar "Load More" di ResultsPage tahu filter yang dipakai
       try {
         sessionStorage.setItem(
           `search-${data.search_id}`,
@@ -51,7 +49,6 @@ export default function SearchPage() {
     const query = values.query?.trim()
     if (!query) return
 
-    // Validasi tahun sederhana
     if (filters.year_from && filters.year_to) {
       const from = Number(filters.year_from)
       const to = Number(filters.year_to)

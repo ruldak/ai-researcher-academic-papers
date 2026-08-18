@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Cek token yang tersimpan saat aplikasi dibuka
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (!token) {
@@ -27,7 +26,6 @@ export function AuthProvider({ children }) {
     setUser(res.data.user)
   }
 
-  // Register = auto login (backend langsung mengembalikan token)
   const register = async (name, email, password) => {
     const res = await api.post("/auth/register", { name, email, password })
     localStorage.setItem("token", res.data.access_token)

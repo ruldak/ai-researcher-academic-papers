@@ -26,7 +26,6 @@ export default function ResultsPage() {
 
   const loadMore = useMutation({
     mutationFn: (page) => {
-      // Ambil filter & sort dari sessionStorage (disimpan saat search pertama)
       let filters = null
       let sort = "relevance_score:desc"
       try {
